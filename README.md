@@ -1,2 +1,8 @@
-# az-ado-self-hosted-agent
-Azure DevOps self-hosted agent deployment
+# Azure DevOps Self-Hosted Agent
+
+To create the infrastructure:
+
+```sh
+terraform init
+terraform apply -auto-approve
+```

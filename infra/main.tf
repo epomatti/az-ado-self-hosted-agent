@@ -51,7 +51,7 @@ module "vm_app" {
   affix          = "${var.workload}-app"
   admin_username = local.app_admin
   vm_size        = var.vm_size
-  custom_data    = filebase64("${path.module}/cloud-init-app.sh")
+  custom_data    = filebase64("${path.module}/cloud-init/app.sh")
   subnet         = azurerm_subnet.default.id
 }
 
@@ -63,6 +63,6 @@ module "vm_agent" {
   affix          = "${var.workload}-agent"
   admin_username = local.agent_admin
   vm_size        = var.vm_size
-  custom_data    = filebase64("${path.module}/cloud-init-agent.sh")
+  custom_data    = filebase64("${path.module}/cloud-init/agent.sh")
   subnet         = azurerm_subnet.default.id
 }
