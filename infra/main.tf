@@ -18,7 +18,8 @@ provider "azurerm" {
 }
 
 locals {
-  app_admin = "appuser"
+  app_admin   = "appuser"
+  agent_admin = "agentuser"
 }
 
 ### Group ###
@@ -48,14 +49,20 @@ module "vm_app" {
   location       = azurerm_resource_group.default.location
   group          = azurerm_resource_group.default.name
   affix          = "${var.workload}-app"
-  admin_username = "appuser"
+  admin_username = local.app_admin
   vm_size        = var.vm_size
   custom_data    = filebase64("${path.module}/cloud-init-app.sh")
   subnet         = azurerm_subnet.default.id
 }
 
-
-# custom_data = filebase64("${path.module}/cloud-init.sh")
-
 ### VM Agent ###
-# custom_data = filebase64("${path.module}/cloud-init.sh")
+module "vm_agent" {
+  source         = "./modules/vm"
+  location       = azurerm_resource_group.default.location
+  group          = azurerm_resource_group.default.name
+  affix          = "${var.workload}-agent"
+  admin_username = local.agent_admin
+  vm_size        = var.vm_size
+  custom_data    = filebase64("${path.module}/cloud-init-agent.sh")
+  subnet         = azurerm_subnet.default.id
+}
