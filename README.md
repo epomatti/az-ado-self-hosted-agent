@@ -45,8 +45,16 @@ steps:
     Dockerfile: '**/Dockerfile'
 ```
 
+## Deploy to VM environment
 
-## Local Docker app
+Following the VM deploy environment [docs][3], create an environment called "Production".
+
+Register the VM as a resource, like `vm-myapp-app`.
+
+
+
+
+## Develop the local Docker app
 
 To check if the code in `app` directory is running:
 
@@ -58,6 +66,9 @@ docker run --rm -p 3333:3333 hellopy
 ## Reference
 
 - [Example article][2]
+- [Azure Code Deploy][4]
 
 [1]: https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/linux-agent?view=azure-devops
 [2]: https://medium.com/@cocci.g/set-up-an-azure-devops-self-hosted-agent-5cd9b009b509
+[3]: https://learn.microsoft.com/en-us/azure/devops/pipelines/process/environments-virtual-machines?view=azure-devops
+[4]: https://learn.microsoft.com/en-us/azure/devops/pipelines/ecosystems/deploy-linux-vm?view=azure-devops&tabs=javascript
