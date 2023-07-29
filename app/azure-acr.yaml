@@ -11,6 +11,9 @@ pool:
     - agent.name -equals vm-myapp-agent
 
 steps:
-  - script: |
-      echo Hello
-    displayName: "Say hello"
+- task: Docker@2
+  inputs:
+    containerRegistry: 'acr-docker-others'
+    repository: 'myapp'
+    command: 'buildAndPush'
+    Dockerfile: '**/Dockerfile'
