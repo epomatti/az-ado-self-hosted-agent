@@ -18,6 +18,7 @@ jobs:
         deploy:
           steps:
             - script: |
+                echo $(ACR_ADMIN_PASSWORD)
                 echo $(ACR_ADMIN_PASSWORD) | docker login --username acrmyapp888888 --password-stdin 
                 docker pull acrmyapp888888.azurecr.io/myapp:latest
                 docker run -d -p 3333:3333 acrmyapp888888.azurecr.io/myapp:latest
