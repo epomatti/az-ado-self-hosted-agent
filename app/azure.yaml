@@ -1,0 +1,12 @@
+trigger:
+- main
+
+pool:
+  name: Default
+  demands:
+   - agent.name -equals vm-myapp-agent
+
+steps:
+- script: |
+    echo Hello
+  displayName: 'Say hello'
