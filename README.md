@@ -27,7 +27,7 @@ Run the pipeline.
 
 > 💡 You'll need to give permissions to the pipeline
 
-## Docker Job
+## Docker build/push to ACR
 
 The pipeline [`app/azure-acr.yaml`](app/azure-acr.yaml) will build and deploy to ACR.
 
