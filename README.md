@@ -51,7 +51,7 @@ Following the VM deploy environment [docs][3], create an environment called "Pro
 
 Register the VM as a resource, like `vm-myapp-app`.
 
-
+Create the pipeline referencing [`app/azure-deploy.yaml`](app/azure-deploy.yaml) with the `ACR_ADMIN_PASSWORD` secret.
 
 
 ## Develop the local Docker app

@@ -5,10 +5,10 @@ trigger:
   paths:
     include:
       - app
-pool:
-  name: Default
-  demands:
-    - agent.name -equals vm-myapp-agent
+# pool:
+#   name: Default
+#   demands:
+#     - agent.name -equals vm-myapp-agent
 
 jobs:
   - deployment: VMDeploy
