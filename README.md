@@ -45,13 +45,17 @@ steps:
     Dockerfile: '**/Dockerfile'
 ```
 
-## Deploy to VM environment
+## Deploy to a VM environment
 
 Following the VM deploy environment [docs][3], create an environment called "Production".
 
 Register the VM as a resource, like `vm-myapp-app`.
 
 Create the pipeline referencing [`app/azure-deploy.yaml`](app/azure-deploy.yaml) with the `ACR_ADMIN_PASSWORD` secret.
+
+Run the pipeline to pull and run the previously built image.
+
+<img src=".assets/deploy.png" />
 
 
 ## Develop the local Docker app
