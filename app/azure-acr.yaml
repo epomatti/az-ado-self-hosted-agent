@@ -17,3 +17,6 @@ steps:
     repository: 'myapp'
     command: 'buildAndPush'
     Dockerfile: '**/Dockerfile'
+    tags: |
+      $(Build.BuildId)
+      latest
