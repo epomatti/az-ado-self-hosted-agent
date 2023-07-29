@@ -27,6 +27,15 @@ Run the pipeline.
 
 > 💡 You'll need to give permissions to the pipeline
 
+## Local Docker app
+
+To check if the code in `app` directory is running:
+
+```
+docker build -t hellopy .
+docker run --rm -p 3333:3333 hellopy
+```
+
 ## Reference
 
 - [Example article][2]
