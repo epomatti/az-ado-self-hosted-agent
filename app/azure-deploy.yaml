@@ -5,10 +5,6 @@ trigger:
   paths:
     include:
       - app
-# pool:
-#   name: Default
-#   demands:
-#     - agent.name -equals vm-myapp-agent
 
 jobs:
   - deployment: VMDeploy
@@ -22,6 +18,6 @@ jobs:
         deploy:
           steps:
             - script: |
-                docker login --username acrmyapp888888 --password-stdin $(ACR_ADMIN_PASSWORD)
+                echo $(ACR_ADMIN_PASSWORD) | docker login --username acrmyapp888888 --password-stdin 
                 docker pull acrmyapp888888.azurecr.io/myapp:latest
                 docker run -d -p 3333:3333 acrmyapp888888.azurecr.io/myapp:latest
