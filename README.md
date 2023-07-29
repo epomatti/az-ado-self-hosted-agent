@@ -21,11 +21,30 @@ When completed, the agent will be online:
 
 <img src=".assets/agent.png" />
 
-Create a pipeline based on the `app/azure.yaml` file in this repo. It is set up to use a self-hosted agent.
+Create a pipeline based on the [`app/azure-hello.yaml`](app/azure-hello.yaml) file in this repo. It is set up to use a self-hosted agent.
 
 Run the pipeline.
 
 > 💡 You'll need to give permissions to the pipeline
+
+## Docker Job
+
+The pipeline [`app/azure-acr.yaml`](app/azure-acr.yaml) will build and deploy to ACR.
+
+Create a service connect for Docker Registry and select the option "Others". Create the 
+
+Now create the pipeline that will build and push to ACR. Change the `containerRegistry` attribute as required.
+
+```yaml
+steps:
+- task: Docker@2
+  inputs:
+    containerRegistry: 'acr-docker-others'
+    repository: 'myapp'
+    command: 'buildAndPush'
+    Dockerfile: '**/Dockerfile'
+```
+
 
 ## Local Docker app
 
