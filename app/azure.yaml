@@ -1,12 +1,15 @@
 trigger:
-- main
-
+  branches:
+    - main
+  paths:
+    include:
+      - app
 pool:
   name: Default
   demands:
-   - agent.name -equals vm-myapp-agent
+    - agent.name -equals vm-myapp-agent
 
 steps:
-- script: |
-    echo Hello
-  displayName: 'Say hello'
+  - script: |
+      echo Hello
+    displayName: "Say hello"
