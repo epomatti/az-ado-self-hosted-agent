@@ -22,6 +22,6 @@ jobs:
         deploy:
           steps:
             - script: |
-                docker login -u acrmyapp888888 -p $(ACR_ADMIN_PASSWORD)
+                docker login --username acrmyapp888888 --password-stdin $(ACR_ADMIN_PASSWORD)
                 docker pull acrmyapp888888.azurecr.io/myapp:latest
                 docker run -d -p 3333:3333 acrmyapp888888.azurecr.io/myapp:latest
