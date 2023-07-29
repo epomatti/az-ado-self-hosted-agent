@@ -63,8 +63,8 @@ Run the pipeline to pull and run the previously built image.
 To check if the code in `app` directory is running:
 
 ```
-docker build -t hellopy .
-docker run --rm -p 3333:3333 hellopy
+docker build -t hello .
+docker run --rm -p 3333:3333 hello
 ```
 
 ## Reference
