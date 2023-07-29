@@ -43,6 +43,16 @@ resource "azurerm_subnet" "default" {
   address_prefixes     = ["10.0.0.0/24"]
 }
 
+### ACR ###
+
+resource "azurerm_container_registry" "acr" {
+  name                = "acr${var.workload}888888"
+  resource_group_name = azurerm_resource_group.default.name
+  location            = azurerm_resource_group.default.location
+  sku                 = "Basic"
+  admin_enabled       = true
+}
+
 ### VM Application ###
 module "vm_app" {
   source         = "./modules/vm"

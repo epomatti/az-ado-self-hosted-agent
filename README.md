@@ -21,4 +21,15 @@ When completed, the agent will be online:
 
 <img src=".assets/agent.png" />
 
+Create a pipeline based on the `app/azure.yaml` file in this repo. It is set up to use a self-hosted agent.
+
+Run the pipeline.
+
+> 💡 You'll need to give permissions to the pipeline
+
+## Reference
+
+- [Example article][2]
+
 [1]: https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/linux-agent?view=azure-devops
+[2]: https://medium.com/@cocci.g/set-up-an-azure-devops-self-hosted-agent-5cd9b009b509

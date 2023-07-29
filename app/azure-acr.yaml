@@ -1,0 +1,16 @@
+trigger:
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - app
+pool:
+  name: Default
+  demands:
+    - agent.name -equals vm-myapp-agent
+
+steps:
+  - script: |
+      echo Hello
+    displayName: "Say hello"
