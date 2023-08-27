@@ -2,7 +2,7 @@
 
 Demo project for following the [documentation][1] for Linux.
 
-<img src=".assets/self-hosted.png" width=750 />
+<img src=".assets/self-hosted.png" width=650 />
 
 To create the infrastructure:
 
