@@ -4,6 +4,18 @@ Demo project for following the [documentation][1] for Linux.
 
 <img src=".assets/self-hosted.png" width=750 />
 
+Create the server key pair:
+
+```sh
+mkdir -p .keys && ssh-keygen -f .keys/tmp_key
+```
+
+Create the variables file and set the required variables:
+
+```sh
+cp config/template.tfvars .auto.tfvars
+```
+
 To create the infrastructure:
 
 ```sh
@@ -68,6 +80,15 @@ To check if the code in `app` directory is running:
 docker build -t hello .
 docker run --rm -p 3333:3333 hello
 ```
+
+## Using the Data Disk
+
+The virtual machines are provisioned with an additional attached data disk.
+
+This configuration can be utilized on the infrastructure components:
+
+- [Docker daemon](https://docs.docker.com/engine/daemon/)
+- [Azure DevOps Self-Hosted Agent](https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/linux-agent?view=azure-devops&tabs=IP-V4#commands)
 
 ## Reference
 

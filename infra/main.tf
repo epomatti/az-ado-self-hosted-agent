@@ -1,23 +1,23 @@
 terraform {
   required_providers {
     azurerm = {
-      source = "hashicorp/azurerm"
+      source  = "hashicorp/azurerm"
+      version = ">= 4.0.0"
     }
-  }
-  backend "local" {
-    path = ".workspace/terraform.tfstate"
   }
 }
 
-provider "azurerm" {
-  features {
-    resource_group {
-      prevent_deletion_if_contains_resources = false
-    }
-  }
+resource "random_string" "affix" {
+  length  = 6
+  upper   = false
+  special = false
+  numeric = true
 }
 
 locals {
+  workload = "contoso${random_string.affix.result}"
+
+  # Virtual machines
   app_admin   = "appuser"
   agent_admin = "agentuser"
 }
@@ -29,50 +29,67 @@ resource "azurerm_resource_group" "default" {
 }
 
 ### Network ###
-resource "azurerm_virtual_network" "default" {
-  name                = "vnet-${var.workload}"
-  address_space       = ["10.0.0.0/16"]
-  location            = azurerm_resource_group.default.location
-  resource_group_name = azurerm_resource_group.default.name
-}
-
-resource "azurerm_subnet" "default" {
-  name                 = "subnet-default"
-  resource_group_name  = azurerm_resource_group.default.name
-  virtual_network_name = azurerm_virtual_network.default.name
-  address_prefixes     = ["10.0.0.0/24"]
-}
-
-### ACR ###
-
-resource "azurerm_container_registry" "acr" {
-  name                = "acr${var.workload}888888"
+module "vnet" {
+  source              = "./modules/virtual-network"
+  workload            = local.workload
   resource_group_name = azurerm_resource_group.default.name
   location            = azurerm_resource_group.default.location
-  sku                 = "Basic"
-  admin_enabled       = true
 }
 
-### VM Application ###
-module "vm_app" {
-  source         = "./modules/vm"
-  location       = azurerm_resource_group.default.location
-  group          = azurerm_resource_group.default.name
-  affix          = "${var.workload}-app"
-  admin_username = local.app_admin
-  vm_size        = var.vm_size
-  custom_data    = filebase64("${path.module}/cloud-init/app.sh")
-  subnet         = azurerm_subnet.default.id
+### Container Registry ###
+module "cr" {
+  source              = "./modules/container-registry"
+  workload            = local.workload
+  resource_group_name = azurerm_resource_group.default.name
+  location            = azurerm_resource_group.default.location
+  sku                 = var.acr_sku
+  admin_enabled       = var.acr_admin_enabled
 }
 
-### VM Agent ###
+### Virtual Machines ###
 module "vm_agent" {
-  source         = "./modules/vm"
-  location       = azurerm_resource_group.default.location
-  group          = azurerm_resource_group.default.name
-  affix          = "${var.workload}-agent"
-  admin_username = local.agent_admin
-  vm_size        = var.vm_size
-  custom_data    = filebase64("${path.module}/cloud-init/agent.sh")
-  subnet         = azurerm_subnet.default.id
+  source              = "./modules/virtual-machine"
+  location            = azurerm_resource_group.default.location
+  resource_group_name = azurerm_resource_group.default.name
+  workload            = var.workload
+  public_key_path     = var.vm_public_key_path
+  admin_username      = var.vm_admin_username
+  size                = var.vm_size
+  subnet_id           = module.vnet.default_subnet_id
+  server_name_affix   = "agent"
+  custom_data_script  = "ubuntu.sh"
+
+  image_publisher = var.vm_image_publisher
+  image_offer     = var.vm_image_offer
+  image_sku       = var.vm_image_sku
+  image_version   = var.vm_image_version
+}
+
+module "vm_app" {
+  source              = "./modules/virtual-machine"
+  location            = azurerm_resource_group.default.location
+  resource_group_name = azurerm_resource_group.default.name
+  workload            = var.workload
+  public_key_path     = var.vm_public_key_path
+  admin_username      = var.vm_admin_username
+  size                = var.vm_size
+  subnet_id           = module.vnet.default_subnet_id
+  server_name_affix   = "app"
+  custom_data_script  = "ubuntu.sh"
+
+  image_publisher = var.vm_image_publisher
+  image_offer     = var.vm_image_offer
+  image_sku       = var.vm_image_sku
+  image_version   = var.vm_image_version
+}
+
+### Private Link ###
+module "private_link" {
+  source                      = "./modules/private-link"
+  workload                    = local.workload
+  resource_group_name         = azurerm_resource_group.default.name
+  location                    = azurerm_resource_group.default.location
+  vnet_id                     = module.vnet.vnet_id
+  container_registry_id       = module.cr.id
+  private_endpoints_subnet_id = module.vnet.default_subnet_id
 }
